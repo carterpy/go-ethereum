@@ -358,3 +358,30 @@ func (c *bn256Pairing) Run(input []byte) ([]byte, error) {
 	}
 	return false32Byte, nil
 }
+
+// blake2 implemented as a native contract.
+type blake2b struct{}
+
+// I don't know what to use for gas costs yet
+func (c *blake2b) RequiredGas(input []byte) uint64 {
+	return nil
+}
+func (c *blake2b) Blake2b_Sum(size int, key []byte, data []byte) []byte {
+	h, _ := blake2b.New(size, key)
+	h.Write(data)
+	return h.Sum(nil)[:]
+}
+
+// blake2 implemented as a native contract.
+type blake2s struct{}
+
+// I don't know what to use for gas costs yet
+
+func (c *blake2s) RequiredGas(input []byte) uint64 {
+	return nil
+}
+func (c *blake2s) Blake2s_Sum256(key []byte, data []byte) []byte {
+	h, _ := blake2s.New256(key)
+	h.Write(data)
+	return h.Sum(nil)[:]
+}
